@@ -50,6 +50,10 @@ void UBullCowCartridge::SetupGame() //Setting up the game
     PrintLine(TEXT("Welcome to Bull Cows!"));
     PrintLine(TEXT("Guess the %i letter word! \nyou have %i lives"), HiddenWord.Len(),Lives); 
     PrintLine(TEXT("Type in your guess \nPress Enter to continue..."));
+
+    const TCHAR HW[] = TEXT("cake");
+    PrintLine(TEXT("Character 1 of the hidden word is : %c"), HiddenWord[0]); //print "c"
+    PrintLine(TEXT("Character 4 of the hidden word is : %c"), HiddenWord[3]); //print "e"
 }
 
 void UBullCowCartridge::EndGame()
@@ -61,29 +65,46 @@ void UBullCowCartridge::EndGame()
 void UBullCowCartridge::ProcessGuess(FString Guess)
 {
     if(Guess == HiddenWord)
+    {
+        PrintLine(TEXT("You win!"));
+        EndGame();
+    }    
+    else
+    {
+        --Lives;
+        PrintLine(TEXT("Wrong guess, You have lost a life!, Try again!"));
+        if (Lives > 0)
         {
-            PrintLine(TEXT("You win!"));
-            EndGame();
-        }
-        else
-        {
-            --Lives;
-            PrintLine(TEXT("Wrong guess, You have lost a life!, Try again!"));
-            if (Lives > 0)
+            if(Guess.Len() != HiddenWord.Len())
             {
-                if(Guess.Len() != HiddenWord.Len())
-                {
-                    PrintLine(TEXT("Sorry guess again, you have %i lives left"), Lives);
-                }
+                PrintLine(TEXT("Sorry guess again, you have %i lives left"), Lives);
+            }
                 // PrintLine(TEXT("The hidden word is %i letters long!,Try again!"),HiddenWord.Len()); 
                     
                 // EndGame();   
-            }
-            else
-            {
-                PrintLine(TEXT("You have no lives left"));
-                EndGame();
-            }
         }
+        else
+        {
+            PrintLine(TEXT("You have no lives left"));
+            EndGame();
+        }
+    }
+
+    if(!IsIsogram(Guess))
+    {
+        PrintLine(TEXT("No repeating letters, guess again!"));
+        return;
+    }
+}
+
+bool UBullCowCartridge::IsIsogram(FString Word) const //The function do not have do anthing to member variables we add conts to it
+{
+    // For each letter
+    //Start at element 0
+    //compere against the next letter
+    //untill we reACH {Word.Len()  }
+    //if any are the same return false
+
+    return true;
 }
 
